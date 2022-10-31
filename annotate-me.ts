@@ -21,9 +21,17 @@ import process from 'node:process'
 
 // These types are not correctly constructed. It is up to you to figure out what
 // to put in.
-type UnsanitizedNumber = {}
-type SanitizedNumber = {}
-type InvalidNumber = {}
+type UnsanitizedNumber = {
+  kind: 'unsanitized-number'
+  value: number
+}
+type SanitizedNumber = {
+  kind: 'sanitized-number'
+  value: number
+}
+type InvalidNumber = {
+  kind: 'invalidNumber'
+}
 
 // This type is valid though. A freebie!
 type AppNumber =
@@ -35,7 +43,7 @@ type AppNumber =
  * Takes a string and converts it to a number. This is the first stage of
  * providing our valid data.
  */
-const unsanitizedNumber = (input) => {
+const unsanitizedNumber = (input: string): UnsanitizedNumber | null => {
   const num = parseInt(input)
   if(isNaN(num)) {
     return null
@@ -53,7 +61,7 @@ const unsanitizedNumber = (input) => {
  * More practical applications of this could be making sure an email input by a
  * user is indeed formatted as an email.
  */
-const sanitizedNumber = (input) => {
+const sanitizedNumber = (input: UnsanitizedNumber | null): SanitizedNumber | null => {
   if(input == null) {
     // If null, just pass the error along.
     return null
@@ -61,7 +69,7 @@ const sanitizedNumber = (input) => {
     if(input.value > 0 && input.value <= 10) {
       return {
         kind: 'sanitized-number',
-        value: input,
+        value: input.value,
       }
     } else {
       return null
