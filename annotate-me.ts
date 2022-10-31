@@ -30,7 +30,8 @@ type SanitizedNumber = {
   value: number
 }
 type InvalidNumber = {
-  kind: 'invalidNumber'
+  kind: 'invalid-number'
+  
 }
 
 // This type is valid though. A freebie!
@@ -81,7 +82,7 @@ const sanitizedNumber = (input: UnsanitizedNumber | null): SanitizedNumber | nul
 // Note this function does not return anything. How to annotate it?
 // We also don't particularly care what is passed in. How do we annotate a
 // parameter whose shape we care nothing about?
-function showError(x) {
+function showError(x: any) {
   console.error(`${x} is not what I asked for.`)
 }
 
@@ -90,8 +91,8 @@ function showError(x) {
   console.log('Give me a number between 1 and 10:')
   // Our final number doesn't exist yet. Must be set to an invalid state so
   // nothing can fall through.
-  let finalNumber = {
-    kind: 'invalid-number',
+  let finalNumber: AppNumber = {
+    kind: 'invalid-number'
   }
   const rl = readline.createInterface({
     input: process.stdin,
@@ -108,8 +109,8 @@ function showError(x) {
     const input = await rl.question('Give me a number between 1 and 10:')
     // Normally we wouldn't call these numStep1 and numStep2, but this is to
     // help guide through the flow of the program.
-    const numStep1 = unsanitizedNumber(input)
-    const numStep2 = sanitizedNumber(numStep1)
+    const numStep1: UnsanitizedNumber | null = unsanitizedNumber(input)
+    const numStep2: SanitizedNumber | null = sanitizedNumber(numStep1)
     if(numStep2 != null) {
       finalNumber = numStep2
     } else {
