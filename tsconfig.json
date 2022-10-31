@@ -32,6 +32,6 @@
       "node"
     ],
     "useUnknownInCatchVariables": true,
-    "include": ["./"]
-  }
+  },
+  "include": ["./"]
 }
